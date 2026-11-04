@@ -663,10 +663,11 @@ section{scroll-margin-top:72px}
       (function(){var f=document.getElementById('contactForm');if(!f)return;
       var note=document.getElementById('cfNote'),btn=f.querySelector('button[type=submit]'),bt=btn.querySelector('#cfBtnTxt');
       f.addEventListener('submit',function(e){e.preventDefault();btn.disabled=true;var ot=bt.textContent;bt.textContent='Sending…';
-      fetch('https://formsubmit.co/ajax/m.abubaakar755@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:document.getElementById('cfName').value,email:document.getElementById('cfEmail').value,message:document.getElementById('cfMsg').value,_subject:'New message from your portfolio',_template:'table',_captcha:'false'})})
-      .then(function(r){return r.json();}).then(function(d){if(d&&d.success=='true'){note.style.color='var(--green)';note.textContent='✓ Message sent! I\'ll get back to you soon.';f.reset();}else{throw 0;}})
-      .catch(function(){note.style.color='#f87171';note.textContent='Couldn\'t send right now — email me directly at m.abubaakar755@gmail.com';})
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort();},20000);
+      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},signal:ctl.signal,
+      body:JSON.stringify({access_key:'b2b49aab-1c34-4cae-b028-bd1ca75459b0',subject:'New message from your portfolio',from_name:document.getElementById('cfName').value,name:document.getElementById('cfName').value,email:document.getElementById('cfEmail').value,message:document.getElementById('cfMsg').value})})
+      .then(function(r){clearTimeout(to);return r.json();}).then(function(d){if(d&&d.success===true){note.style.color='var(--green)';note.textContent='✓ Message sent! I\'ll get back to you soon.';f.reset();}else{throw 0;}})
+      .catch(function(){clearTimeout(to);note.style.color='#f87171';note.textContent='Couldn\'t send right now — email me directly at m.abubaakar755@gmail.com';})
       .finally(function(){btn.disabled=false;bt.textContent=ot;});});})();
       </script>
     </div>
