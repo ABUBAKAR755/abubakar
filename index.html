@@ -56,6 +56,12 @@ html[data-theme="light"] #chatPanel{background:#ffffff}
 #waBtn{position:fixed;bottom:26px;left:26px;width:60px;height:60px;border-radius:50%;background:#25D366;display:grid;place-items:center;z-index:200;box-shadow:0 12px 30px rgba(37,211,102,.4);transition:transform .25s}
 #waBtn:hover{transform:scale(1.1)}
 #waBtn svg{width:30px;height:30px;fill:#fff}
+/* ---------- contact section theme ---------- */
+#contact .title{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+html[data-theme="light"] .box{background:linear-gradient(150deg,#ffffff,#edf1f8);border-color:var(--line);box-shadow:0 24px 60px rgba(15,23,42,.1)}
+html[data-theme="light"] .c-item{background:rgba(255,255,255,.7)}
+html[data-theme="light"] .cta-form input,html[data-theme="light"] .cta-form textarea{background:rgba(255,255,255,.8)}
+#cfNote{min-height:1.5em;font-size:.9rem;margin:6px 0 0;text-align:center}
 /* ---------- project filters & badges ---------- */
 .proj-filters{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 6px;position:relative;z-index:2}
 .pf{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:.85rem;cursor:pointer;transition:all .25s;font-family:inherit}
@@ -647,11 +653,22 @@ section{scroll-margin-top:72px}
         <span class="c-item"><span class="e">📍</span>Swabi, Pakistan · Open to relocate</span>
       </div>
       <form class="cta-form" id="contactForm">
-        <input type="text" id="cfName" placeholder="Your name" required>
-        <input type="email" id="cfEmail" placeholder="Your email" required>
-        <textarea id="cfMsg" placeholder="Tell me about your project or role..." required></textarea>
-        <button type="submit" class="btn" style="justify-content:center">Send Message →</button>
+        <input type="text" name="name" id="cfName" placeholder="Your name" required>
+        <input type="email" name="email" id="cfEmail" placeholder="Your email" required>
+        <textarea name="message" id="cfMsg" placeholder="Tell me about your project or role..." required></textarea>
+        <button type="submit" class="btn" style="justify-content:center"><span id="cfBtnTxt">Send Message →</span></button>
+        <p id="cfNote" aria-live="polite"></p>
       </form>
+      <script>
+      (function(){var f=document.getElementById('contactForm');if(!f)return;
+      var note=document.getElementById('cfNote'),btn=f.querySelector('button[type=submit]'),bt=btn.querySelector('#cfBtnTxt');
+      f.addEventListener('submit',function(e){e.preventDefault();btn.disabled=true;var ot=bt.textContent;bt.textContent='Sending…';
+      fetch('https://formsubmit.co/ajax/m.abubaakar755@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name:document.getElementById('cfName').value,email:document.getElementById('cfEmail').value,message:document.getElementById('cfMsg').value,_subject:'New message from your portfolio',_template:'table',_captcha:'false'})})
+      .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(){note.style.color='var(--green)';note.textContent='✓ Message sent! I\'ll get back to you soon.';f.reset();})
+      .catch(function(){note.style.color='#f87171';note.textContent='Couldn\'t send right now — email me directly at m.abubaakar755@gmail.com';})
+      .finally(function(){btn.disabled=false;bt.textContent=ot;});});})();
+      </script>
     </div>
   </div>
 </section>
@@ -659,7 +676,7 @@ section{scroll-margin-top:72px}
 <footer>
   <div class="wrap">
     <div class="sg">Muhammad Abubakar</div>
-    <div>AI Engineer · Python Developer · LLM & RAG Systems</div>
+    <div>Full Stack Developer · AI Engineer · Python Developer</div>
     <div style="margin-top:10px">© 2026 Muhammad Abubakar · Built with passion in Pakistan 🇵🇰</div>
   </div>
 </footer>
