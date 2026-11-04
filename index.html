@@ -58,8 +58,8 @@ html[data-theme="light"] #chatPanel{background:#ffffff}
 #waBtn svg{width:30px;height:30px;fill:#fff}
 /* ---------- contact section theme ---------- */
 #contact .title{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
-html[data-theme="light"] .box{background:linear-gradient(150deg,#ffffff,#edf1f8);border-color:var(--line);box-shadow:0 24px 60px rgba(15,23,42,.1)}
-html[data-theme="light"] .c-item{background:rgba(255,255,255,.7)}
+html[data-theme="light"] #contact .box{background:linear-gradient(150deg,#ffffff,#edf1f8);border-color:var(--line);box-shadow:0 24px 60px rgba(15,23,42,.1)}
+html[data-theme="light"] #contact .c-item{background:rgba(255,255,255,.7)}
 html[data-theme="light"] .cta-form input,html[data-theme="light"] .cta-form textarea{background:rgba(255,255,255,.8)}
 #cfNote{min-height:1.5em;font-size:.9rem;margin:6px 0 0;text-align:center}
 /* ---------- project filters & badges ---------- */
@@ -665,7 +665,7 @@ section{scroll-margin-top:72px}
       f.addEventListener('submit',function(e){e.preventDefault();btn.disabled=true;var ot=bt.textContent;bt.textContent='Sending…';
       fetch('https://formsubmit.co/ajax/m.abubaakar755@gmail.com',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({name:document.getElementById('cfName').value,email:document.getElementById('cfEmail').value,message:document.getElementById('cfMsg').value,_subject:'New message from your portfolio',_template:'table',_captcha:'false'})})
-      .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(){note.style.color='var(--green)';note.textContent='✓ Message sent! I\'ll get back to you soon.';f.reset();})
+      .then(function(r){return r.json();}).then(function(d){if(d&&d.success=='true'){note.style.color='var(--green)';note.textContent='✓ Message sent! I\'ll get back to you soon.';f.reset();}else{throw 0;}})
       .catch(function(){note.style.color='#f87171';note.textContent='Couldn\'t send right now — email me directly at m.abubaakar755@gmail.com';})
       .finally(function(){btn.disabled=false;bt.textContent=ot;});});})();
       </script>
